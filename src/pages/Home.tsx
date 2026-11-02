@@ -11,6 +11,7 @@ export default function Home() {
     <section className="mx-auto max-w-6xl px-5 pt-20"><h2 className="font-serif text-4xl">Como funciona o atendimento</h2>
       <ol className="mt-8 grid gap-6 md:grid-cols-3">{steps.map(([I, t], i) => <li key={i} className="rounded-sm border border-nude bg-white p-6"><I className="text-marrom" /><p className="mt-4">{t}</p></li>)}</ol></section>
     <section className="mx-auto max-w-6xl px-5 pt-20"><h2 className="font-serif text-4xl">Procedimentos em destaque</h2>
-      <p className="mt-3 text-marrom">Os procedimentos serão exibidos aqui após o cadastro pela administradora.</p></section>
+      <p className="mt-3 max-w-2xl">Pacotes de acompanhamento no pós-operatório de cirurgia plástica e massoterapia, sempre no conforto da sua casa.</p>
+      <Link to="/procedimentos" className="mt-6 inline-block rounded-full bg-cacau px-7 py-3 text-white hover:bg-marrom">Ver pacotes e valores</Link></section>
   </>)
 }
