@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signed() { return request.auth != null; }
+    function admin() { return signed() && request.auth.token.admin == true; }
+    function mine(uid) { return signed() && request.auth.uid == uid; }
+    match /procedures/{id} { allow read: if true; allow write: if admin(); }
+    match /categories/{id} { allow read: if true; allow write: if admin(); }
+    match /settings/{id} { allow read: if true; allow write: if admin(); }
+    match /users/{uid} { allow read, update: if mine(uid) || admin(); allow create: if mine(uid); }
+    match /customers/{id} { allow read, write: if mine(id) || admin(); }
+    match /addresses/{id} {
+      allow read, update, delete: if admin() || (signed() && resource.data.userId == request.auth.uid);
+      allow create: if signed() && request.resource.data.userId == request.auth.uid; }
+    match /appointments/{id} {
+      allow read: if admin() || (signed() && resource.data.userId == request.auth.uid);
+      allow create: if signed() && request.resource.data.userId == request.auth.uid && request.resource.data.status == 'solicitacao_recebida';
+      allow update, delete: if admin(); }
+    match /quotes/{id} {
+      allow read: if admin() || (signed() && resource.data.userId == request.auth.uid);
+      allow create: if signed() && request.resource.data.userId == request.auth.uid;
+      allow update: if admin(); }
+    match /notifications/{id} { allow read: if admin() || (signed() && resource.data.userId == request.auth.uid); allow write: if admin(); }
+    match /payments/{id} { allow read: if admin() || (signed() && resource.data.userId == request.auth.uid); allow write: if false; }
+    match /transactions/{id} { allow read: if admin(); allow write: if false; }
+    match /audit_logs/{id} { allow read: if admin(); allow write: if false; }
+  }
+}
