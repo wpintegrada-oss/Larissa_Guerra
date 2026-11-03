@@ -2,11 +2,22 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
     function signed() { return request.auth != null; }
-    function admin() { return signed() && request.auth.token.admin == true; }
+    function admin() { return signed() && exists(/databases/$(db)/documents/admins/$(request.auth.uid)); }
     function mine(uid) { return signed() && request.auth.uid == uid; }
     match /procedures/{id} { allow read: if true; allow write: if admin(); }
     match /categories/{id} { allow read: if true; allow write: if admin(); }
     match /settings/{id} { allow read: if true; allow write: if admin(); }
+    match /admins/{uid} { allow read: if mine(uid); allow write: if false; }
+    function len(d, k, n) { return !(k in d) || (d[k] is string && d[k].size() <= n); }
+    match /requests/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['tipo','item','nome','fone','endereco','data','obs','status','createdAt'])
+        && request.resource.data.keys().hasAll(['tipo','nome','fone','status','createdAt'])
+        && request.resource.data.tipo in ['agendar','orcamento','contato']
+        && request.resource.data.status == 'novo' && request.resource.data.createdAt == request.time
+        && len(request.resource.data,'nome',120) && len(request.resource.data,'fone',30) && len(request.resource.data,'item',250)
+        && len(request.resource.data,'endereco',250) && len(request.resource.data,'data',12) && len(request.resource.data,'obs',1000);
+      allow read, update, delete: if admin();
+    }
     match /users/{uid} { allow read, update: if mine(uid) || admin(); allow create: if mine(uid); }
     match /customers/{id} { allow read, write: if mine(id) || admin(); }
     match /addresses/{id} {

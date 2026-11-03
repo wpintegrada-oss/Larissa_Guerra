@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { MessageCircle, Mail, Clock, Home, Phone, Send } from 'lucide-react'
-import { WHATSAPP, EMAIL, HORARIO, REGIOES, formatPhone, waLink } from '../lib/config'
+import { site, formatPhone, waLink } from '../lib/config'
+import { saveRequest } from '../lib/requests'
 
 const pending = <span className="text-marrom/70">A informar</span>
 
@@ -20,7 +21,7 @@ export default function Contato() {
     if (!f.nome.trim() || !f.fone.trim() || !f.msg.trim()) return setErro('Preencha nome, WhatsApp e a mensagem.')
     const link = waLink(`Olá! Meu nome é ${f.nome}. ${f.msg}\nContato: ${f.fone}${f.email ? ' | ' + f.email : ''}`)
     if (!link) return setErro('O WhatsApp de atendimento ainda não foi configurado. Tente novamente em breve.')
-    setErro(''); window.open(link, '_blank', 'noopener')
+    setErro(''); void saveRequest({ tipo: 'contato', nome: f.nome, fone: f.fone, obs: `${f.msg}${f.email ? ' | ' + f.email : ''}`.slice(0, 900) }); window.open(link, '_blank', 'noopener')
   }
   const input = 'mt-1 w-full rounded-sm border border-nude bg-bege/30 px-3 py-2'
 
@@ -34,10 +35,10 @@ export default function Contato() {
         <div className="rounded-lg border border-nude bg-white p-6">
           <h2 className="font-serif text-3xl text-marrom">Informações</h2>
           <ul className="mt-6 space-y-5">
-            <Row icon={Phone} title="WhatsApp">{WHATSAPP ? formatPhone(WHATSAPP) : pending}</Row>
-            <Row icon={Mail} title="E-mail">{EMAIL ? <a className="underline" href={`mailto:${EMAIL}`}>{EMAIL}</a> : pending}</Row>
-            <Row icon={Clock} title="Horário de atendimento domiciliar">{HORARIO || pending}</Row>
-            <Row icon={Home} title="Regiões atendidas (exclusivo domiciliar)">{REGIOES || pending}</Row>
+            <Row icon={Phone} title="WhatsApp">{site.whatsapp ? formatPhone(site.whatsapp) : pending}</Row>
+            <Row icon={Mail} title="E-mail">{site.email ? <a className="underline" href={`mailto:${site.email}`}>{site.email}</a> : pending}</Row>
+            <Row icon={Clock} title="Horário de atendimento domiciliar">{site.hours || pending}</Row>
+            <Row icon={Home} title="Regiões atendidas (exclusivo domiciliar)">{site.regions || pending}</Row>
           </ul>
           {wa ? <a href={wa} target="_blank" rel="noreferrer" className="mt-8 flex items-center justify-center gap-2 rounded-sm bg-cacau px-5 py-3 text-white hover:bg-marrom"><MessageCircle size={18} />Conversar agora no WhatsApp</a>
             : <p className="mt-8 rounded-sm bg-nude/40 p-3 text-sm">O botão de WhatsApp será ativado quando o número for configurado.</p>}

@@ -5,8 +5,10 @@ import Placeholder from './pages/Placeholder'
 import Procedimentos from './pages/Procedimentos'
 import Sobre from './pages/Sobre'
 import Contato from './pages/Contato'
+import Admin from './pages/Admin'
 export default function App() {
-  return (<Routes><Route element={<Layout />}>
+  return (<Routes><Route path="admin" element={<Admin />} />
+    <Route element={<Layout />}>
     <Route index element={<Home />} />
     <Route path="sobre" element={<Sobre />} />
     <Route path="procedimentos" element={<Procedimentos />} />
