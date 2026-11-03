@@ -3,6 +3,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User } fr
 import { collection, doc, getDoc, onSnapshot, orderBy, query, setDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../lib/firebase'
 import { site, waLink } from '../lib/config'
+import AdminProcedures from './AdminProcedures'
 
 type Row = { id: string; tipo: string; item?: string; nome: string; fone: string; endereco?: string; data?: string; obs?: string; status: string; createdAt?: { toDate(): Date } }
 const STATUS = ['novo', 'confirmado', 'concluido', 'cancelado']
@@ -58,7 +59,7 @@ function Settings() {
 }
 
 export default function Admin() {
-  const [st, setSt] = useState<'load' | 'out' | 'denied' | 'ok'>('load'); const [tab, setTab] = useState<'req' | 'cfg'>('req')
+  const [st, setSt] = useState<'load' | 'out' | 'denied' | 'ok'>('load'); const [tab, setTab] = useState<'req' | 'proc' | 'cfg'>('req')
   useEffect(() => {
     if (!auth || !db) return
     return onAuthStateChanged(auth, async (u: User | null) => {
@@ -72,7 +73,7 @@ export default function Admin() {
   if (st === 'denied') return <div className="p-10"><p>Esta conta não tem acesso de administradora.</p><button className="mt-4 underline" onClick={() => signOut(auth!)}>Sair</button></div>
   return <div className="mx-auto max-w-4xl px-5 py-10">
     <div className="flex items-center justify-between"><h1 className="font-serif text-4xl">Painel</h1><button className="underline" onClick={() => signOut(auth!)}>Sair</button></div>
-    <div className="mt-6 flex gap-2">{([['req', 'Solicitações'], ['cfg', 'Configurações']] as const).map(([k, l]) =>
+    <div className="mt-6 flex gap-2">{([['req', 'Solicitações'], ['proc', 'Procedimentos'], ['cfg', 'Configurações']] as const).map(([k, l]) =>
       <button key={k} onClick={() => setTab(k)} className={`rounded-full px-5 py-2 ${tab === k ? 'bg-cacau text-white' : 'border border-nude bg-white'}`}>{l}</button>)}</div>
-    {tab === 'req' ? <Requests /> : <Settings />}</div>
+    {tab === 'req' ? <Requests /> : tab === 'proc' ? <AdminProcedures /> : <Settings />}</div>
 }
