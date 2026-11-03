@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { MessageCircle } from 'lucide-react'
 import Logo from './Logo'
 import { WHATSAPP } from '../lib/config'
-const nav = [['/', 'Início'], ['/sobre', 'Sobre'], ['/procedimentos', 'Procedimentos'], ['/minha-conta', 'Minha conta']]
+const nav = [['/', 'Início'], ['/sobre', 'Sobre'], ['/procedimentos', 'Procedimentos'], ['/contato', 'Contato']]
 export default function Layout() {
   const wa = WHATSAPP ? `https://wa.me/${WHATSAPP}` : undefined
   return (<>
