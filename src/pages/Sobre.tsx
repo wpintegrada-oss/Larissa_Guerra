@@ -19,7 +19,7 @@ export default function Sobre() {
           <h1 className="font-serif text-5xl">Larissa Guerra</h1>
           <p className="mt-2 text-marrom">Enfermeira · COREN-PI 989.535</p>
           <div className="mt-6 max-w-prose space-y-4 leading-relaxed">
-            <p>Larissa é profissional da área da saúde: enfermeira, massoterapeuta e pós-graduanda em Estética e Cosméticos. Empreendedora dedicada ao cuidado, à saúde e ao bem-estar das pessoas, construiu sua trajetória com experiência, responsabilidade e amor pelo que faz.</p>
+            <p>Larissa é profissional da área da saúde: enfermeira, massoterapeuta e pós-graduada em Estética e Cosméticos. Empreendedora dedicada ao cuidado, à saúde e ao bem-estar das pessoas, construiu sua trajetória com experiência, responsabilidade e amor pelo que faz.</p>
             <p>São aproximadamente 6 anos de experiência em cirurgia plástica, acompanhamento de pacientes e cuidados assistenciais. Sua atuação é voltada ao cuidado humanizado, com atenção especial a quem passa por procedimentos cirúrgicos e precisa de acompanhamento antes e depois da cirurgia.</p>
           </div>
 
