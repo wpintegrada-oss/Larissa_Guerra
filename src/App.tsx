@@ -15,6 +15,5 @@ export default function App() {
     <Route path="contato" element={<Contato />} />
     <Route path="minha-conta" element={<Placeholder title="Minha conta" />} />
     <Route path="privacidade" element={<Placeholder title="Política de privacidade" />} />
-    <Route path="termos" element={<Placeholder title="Termos de uso" />} />
   </Route></Routes>)
 }
