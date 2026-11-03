@@ -19,6 +19,11 @@ export const packages: Package[] = [
     services: ['Drenagens', 'Tapping', 'Curativos', 'Banho assistido', 'Vestimenta da cinta'] },
 ]
 
+export const estetica = [
+  { id: 'drenagem', name: 'Drenagem', price: 210 },
+  { id: 'limpeza-de-pele', name: 'Limpeza de pele', price: 160 },
+]
+
 export const massages = [
   { name: 'Relaxante', prices: { 30: 70, 60: 120, 90: 170 } },
   { name: 'Terapêutica', prices: { 30: 80, 60: 130, 90: 180 } },

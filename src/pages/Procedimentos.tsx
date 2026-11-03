@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Check, MapPin } from 'lucide-react'
-import { packages, massages, brl, PACKAGE_DAYS } from '../data/procedures'
+import { packages, massages, estetica, brl, PACKAGE_DAYS } from '../data/procedures'
 import RequestDialog, { type Pick } from '../components/RequestDialog'
 
 export default function Procedimentos() {
-  const [cat, setCat] = useState<'enfermagem' | 'estetica'>('enfermagem')
+  const [cat, setCat] = useState<'enfermagem' | 'estetica' | 'massagens'>('enfermagem')
   const [days, setDays] = useState<7 | 10>(10)
   const [pick, setPick] = useState<Pick | null>(null)
   return (
@@ -12,7 +12,7 @@ export default function Procedimentos() {
       <h1 className="font-serif text-5xl">Procedimentos</h1>
       <p className="mt-3 flex items-center gap-2 text-marrom"><MapPin size={16} />Atendimento exclusivamente domiciliar. Taxa de deslocamento conforme a localização.</p>
       <div role="tablist" className="mt-8 flex gap-2">
-        {([['enfermagem', 'Enfermagem'], ['estetica', 'Estética']] as const).map(([k, l]) =>
+        {([['enfermagem', 'Enfermagem'], ['estetica', 'Estética'], ['massagens', 'Massagens']] as const).map(([k, l]) =>
           <button key={k} role="tab" aria-selected={cat === k} onClick={() => setCat(k)}
             className={`rounded-full px-6 py-2 ${cat === k ? 'bg-cacau text-white' : 'border border-nude bg-white'}`}>{l}</button>)}
       </div>
@@ -37,8 +37,22 @@ export default function Procedimentos() {
             </article>)
           })}
         </div>
+      </>) : cat === 'estetica' ? (<>
+        <h2 className="mt-10 font-serif text-3xl">Estética</h2>
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          {estetica.map(e => {
+            const label = `${e.name} (${brl(e.price)})`
+            return (<article key={e.id} className="flex flex-col rounded-sm border border-nude bg-white p-6">
+              <h3 className="font-serif text-2xl">{e.name}</h3>
+              <p className="mt-4 font-serif text-3xl">{brl(e.price)}</p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <button onClick={() => setPick({ label, tipo: 'agendar' })} className="rounded-full bg-cacau px-5 py-2 text-sm text-white hover:bg-marrom">Agendar</button>
+                <button onClick={() => setPick({ label, tipo: 'orcamento' })} className="rounded-full border border-cacau px-5 py-2 text-sm hover:bg-bege">Pedir orçamento</button></div>
+            </article>)
+          })}
+        </div>
       </>) : (<>
-        <h2 className="mt-10 font-serif text-3xl">Massoterapia</h2>
+        <h2 className="mt-10 font-serif text-3xl">Massagens</h2>
         <p className="mt-2 text-sm">Toque no valor para solicitar o tempo escolhido.</p>
         <div className="mt-6 overflow-x-auto"><table className="w-full min-w-[480px] border-collapse bg-white text-left">
           <thead><tr className="bg-cacau text-white"><th className="p-3">Massagem</th>{[30, 60, 90].map(m => <th key={m} className="p-3">{m} min</th>)}</tr></thead>
